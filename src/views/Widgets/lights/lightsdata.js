@@ -26,7 +26,7 @@ render() {
     var lightpull = true;  
 
    
-                     
+const tokenId = '123';              
  const actualLights = []
  
  var lightmapper = lightsData.deviceList.map((lightId, index) => {
