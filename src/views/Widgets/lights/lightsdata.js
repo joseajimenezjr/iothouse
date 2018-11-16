@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import tokenId from './lights/mytokeninfo';
+import tokenId from './mytokeninfo';
 
-const tokenId ={tokenId};
+const newtokenId ={tokenId};
 const lightsData = {
     "deviceList":[
              {"fwVer":"1.5.2 Build 171208 Rel.114610","deviceName":"Smart Wi-Fi Light Switch","status":null,"alias":"Living room can","deviceType":"IOT.SMARTPLUGSWITCH","appServerUrl":"https://use1-wap.tplinkcloud.com","deviceModel":"HS200(US)","deviceMac":"AC84C65E46D7","role":0,"isSameRegion":true,"hwId":"12657950800085A27A64E9E775C8A7A7","fwId":"00000000000000000000000000000000","oemId":"4748FB6E209D782A854A4B5AEDC89284","deviceId":"8006733AFA98F3E63041EE1A0C6EE1351A13ABEA","deviceHwVer":"2.0"},
@@ -22,10 +22,7 @@ const lightsData = {
              {"fwVer":"1.5.2 Build 171208 Rel.114610","deviceName":"Smart Wi-Fi Light Switch","status":null,"alias":"Living room","deviceType":"IOT.SMARTPLUGSWITCH","appServerUrl":"https://use1-wap.tplinkcloud.com","deviceModel":"HS200(US)","deviceMac":"AC84C65E410E","role":0,"isSameRegion":true,"hwId":"12657950800085A27A64E9E775C8A7A7","fwId":"00000000000000000000000000000000","oemId":"4748FB6E209D782A854A4B5AEDC89284","deviceId":"8006FF9FF28B776DF4DC74D95B1015451A128981","deviceHwVer":"2.0"}
          ]}
 
-class LightsData extends Component {
-
-render() {
-    var lightpull = true;  
+         var lightpull = true;  
 
     const actualLights = []
  
@@ -45,6 +42,10 @@ render() {
      });
 
      var updatecomplete = true;
+class LightsData extends Component {
+
+render() {
+    
 
     return (
         <p loadedevent={this.props.loadedevent(this.lightsData, updatecomplete)} />

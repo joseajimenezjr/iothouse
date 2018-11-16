@@ -65,8 +65,8 @@ const socialChartOpts = {
   },
 };
 */
-const tokenId = {tokenId}
-const lightlist = { lightsData }
+const newtokenId = tokenId;
+const lightlist = { lightsData };
 
 //const starter = this.state.lights
 
@@ -92,7 +92,7 @@ class Widgets extends Component {
     console.log(lightindex);
     //this.setState({lights:update({type:{deviceList:{[lightindex]:{status: testing}}}})});
     this.state.lights.lightsData.deviceList[lightindex].status = lightStatus;
-      var url = 'https://use1-wap.tplinkcloud.com/?'=tokenId;
+      var url = 'https://use1-wap.tplinkcloud.com/?'+newtokenId;
       
       var data = {"method":"passthrough", "set_dev_alias":{"alias":""}, "params": {"deviceId": info.props.lightid, "requestData": "{\"system\":{\"set_relay_state\":{\"state\":" + lightStatus + "}}}" }};
 
@@ -132,7 +132,6 @@ class Widgets extends Component {
          return (
             <Col xs="12" sm="6" lg="3" key='2'>
           <Widget01 color="success" key={eachLight.deviceId}  header={eachLight.alias} lightid={eachLight.deviceId} index={index} lightstatusinfo={eachLight.status} lightstatusupdate={this.lightStatusHandler} />
-          {console.log(eachLight.status)}
           </Col>
         )
         })}
