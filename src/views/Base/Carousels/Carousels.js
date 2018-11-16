@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Carousel, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Col, Row } from 'reactstrap';
 import Widget01 from '/Users/JoseJimenez/Downloads/coreui-free-react-admin-template-master/my-project/src/views/Widgets/Widget01';
 import SwipeableViews from 'react-swipeable-views';
+//jose
 
+var jose = 123;
 
 const mystyles = {
   slide: {
