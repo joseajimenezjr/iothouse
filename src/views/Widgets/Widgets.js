@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {Col, Row } from 'reactstrap';
 import Widget01 from './Widget01';
 import lightsData from './lights/lightsdata';
+import tokenId from './lights/mytokeninfo';
+
 
 //import Widget02 from './Widget02';
 //import Widget03 from './Widget03';
@@ -63,6 +65,7 @@ const socialChartOpts = {
   },
 };
 */
+const tokenId = {tokenId}
 const lightlist = { lightsData }
 
 //const starter = this.state.lights
@@ -89,7 +92,7 @@ class Widgets extends Component {
     console.log(lightindex);
     //this.setState({lights:update({type:{deviceList:{[lightindex]:{status: testing}}}})});
     this.state.lights.lightsData.deviceList[lightindex].status = lightStatus;
-      var url = 'https://use1-wap.tplinkcloud.com/?token=f61405d4-A5vzfIpMXZjdWlI4YMAunEI';
+      var url = 'https://use1-wap.tplinkcloud.com/?'=tokenId;
       
       var data = {"method":"passthrough", "set_dev_alias":{"alias":""}, "params": {"deviceId": info.props.lightid, "requestData": "{\"system\":{\"set_relay_state\":{\"state\":" + lightStatus + "}}}" }};
 
