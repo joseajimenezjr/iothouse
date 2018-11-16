@@ -30,7 +30,7 @@ render() {
  const actualLights = []
  
  var lightmapper = lightsData.deviceList.map((lightId, index) => {
-     var url = 'https://wap.tplinkcloud.com?token=f61405d4-A5vzfIpMXZjdWlI4YMAunEI';
+     var url = 'https://wap.tplinkcloud.com?'+tokenId;
      var data = {"method":"passthrough", "params": {"deviceId": lightId.deviceId, "requestData": "{\"system\":{\"get_sysinfo\":null},\"emeter\":{\"get_realtime\":null}}" }}
        fetch(url, {
          method: 'POST',
