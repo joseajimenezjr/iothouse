@@ -2,7 +2,103 @@ import React, { Component } from 'react';
 import {Col, Row } from 'reactstrap';
 import Widget01 from './Widget01';
 import lightsData from './lights/lightsdata';
-import tokenId from './lights/mytokeninfo';
+import mytokenId from './lights/mytokeninfo';
+import MyLights from './lights/testing';
+
+
+const tokenId = {mytokenId}
+const lightlist = { lightsData }
+
+//const starter = this.state.lights
+
+class Widgets extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      lights: lightlist,
+      isLoading: false,
+    };
+
+    this.lightStatusHandler = this.lightStatusHandler.bind(this)
+    
+  }
+  
+
+  lightStatusHandler = (first, info) => {
+    var lightindex = info.props.index;
+    var lightStatus = document.getElementsByClassName('switch-input form-check-input')[lightindex].checked === true ? 1:0;
+    console.log(first);
+    console.log("lightstatus"+lightStatus);
+    console.log(lightindex);
+    //this.setState({lights:update({type:{deviceList:{[lightindex]:{status: testing}}}})});
+    this.state.lights.lightsData.deviceList[lightindex].status = lightStatus;
+      var url = 'https://use1-wap.tplinkcloud.com/?'+tokenId;
+      
+      var data = {"method":"passthrough", "set_dev_alias":{"alias":""}, "params": {"deviceId": info.props.lightid, "requestData": "{\"system\":{\"set_relay_state\":{\"state\":" + lightStatus + "}}}" }};
+
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(data), // data can be `string` or {object}!
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(response => console.log("complete"))
+      .catch(error => console.error('Error:', error));
+  }
+
+  lightupdatehandler = (lightsData, updatecomplete) => {
+    return console.log("update hndlr done",lightsData, updatecomplete);
+  }
+
+  componentDidMount(){
+    this.state.lights.lightsData.deviceList.map((lightId, index) => {
+      var url = 'https://wap.tplinkcloud.com?token=f61405d4-A5vzfIpMXZjdWlI4YMAunEI';
+      var data = {"method":"passthrough", "params": {"deviceId": lightId.deviceId, "requestData": "{\"system\":{\"get_sysinfo\":null},\"emeter\":{\"get_realtime\":null}}" }}
+        fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(data), // data can be `string` or {object}!
+          headers:{
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(response => this.state.lights.lightsData.deviceList[index].status = JSON.parse(response.result.responseData).system.get_sysinfo.relay_state)
+        .catch(error => console.error('Error:', error))
+      });
+      this.state.lights.isLoading = true;
+  }
+ 
+    shouldComponentUpdate(){
+    }
+
+ 
+  render() {
+    return (
+
+      this.state.lights.isLoading === false ? null : 
+      <div className="animated fadeIn">
+      {console.log(this.state)}
+      {console.log({lightsData})}
+      <Row>
+       {this.state.lights.lightsData.deviceList.map((eachLight, index)=> {
+         return (
+            <Col xs="12" sm="6" lg="3" key={index}>
+          <Widget01 color="success" key={eachLight.deviceId}  header={eachLight.alias} lightid={eachLight.deviceId} index={index} lightstatusinfo={eachLight.status} lightstatusupdate={this.lightStatusHandler} />
+          {console.log(eachLight.status)}
+          </Col>
+        )
+        })}
+      </Row>
+        
+      </div>
+    );
+  }
+}
+
+export default Widgets;
 
 
 //import Widget02 from './Widget02';
@@ -65,79 +161,8 @@ const socialChartOpts = {
   },
 };
 */
-const tokenId = {tokenId}
-const lightlist = { lightsData }
 
-//const starter = this.state.lights
 
-class Widgets extends Component {
-  constructor(){
-    super();
-
-    this.state = {
-      lights: lightlist,
-      isLoading: true,
-    };
-
-    this.lightStatusHandler = this.lightStatusHandler.bind(this)
-    
-  }
-  
-
-  lightStatusHandler = (first, info) => {
-    var lightindex = info.props.index;
-    var lightStatus = document.getElementsByClassName('switch-input form-check-input')[lightindex].checked === true ? 1:0;
-    console.log(first);
-    console.log("lightstatus"+lightStatus);
-    console.log(lightindex);
-    //this.setState({lights:update({type:{deviceList:{[lightindex]:{status: testing}}}})});
-    this.state.lights.lightsData.deviceList[lightindex].status = lightStatus;
-      var url = 'https://use1-wap.tplinkcloud.com/?'=tokenId;
-      
-      var data = {"method":"passthrough", "set_dev_alias":{"alias":""}, "params": {"deviceId": info.props.lightid, "requestData": "{\"system\":{\"set_relay_state\":{\"state\":" + lightStatus + "}}}" }};
-
-      fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data), // data can be `string` or {object}!
-        headers:{
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(response => response.json())
-      .then(response => console.log("complete"))
-      .catch(error => console.error('Error:', error));
-  }
-
-  lightupdatehandler = (lightsData, updatecomplete) => {
-    return console.log("update hndlr done",lightsData, updatecomplete);
-  }
-
-  componentDidMount(){
-    this.setState({ isLoading: false });
-  }
- 
-    shouldComponentUpdate(){
-      return this.state.isLoading === true ? true : false;
-    }
-
- 
-  render() {
-    return (
-      this.state.isLoading === true ? null :
-      <div className="animated fadeIn">
-      {console.log(this.state)}
-      {console.log({lightsData})}
-      <Row>
-       {this.state.lights.lightsData.deviceList.map((eachLight, index)=> {
-         return (
-            <Col xs="12" sm="6" lg="3" key='2'>
-          <Widget01 color="success" key={eachLight.deviceId}  header={eachLight.alias} lightid={eachLight.deviceId} index={index} lightstatusinfo={eachLight.status} lightstatusupdate={this.lightStatusHandler} />
-          {console.log(eachLight.status)}
-          </Col>
-        )
-        })}
-      </Row>
-          
         {/*
         <Row>
           <Col xs="12" sm="6" lg="3">
@@ -301,9 +326,3 @@ class Widgets extends Component {
           </Col>
         </Row>
         */}
-      </div>
-    );
-  }
-}
-
-export default Widgets;
