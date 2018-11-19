@@ -31,7 +31,7 @@ const lightsData = {
      var data = {"method":"passthrough", "params": {"deviceId": lightId.deviceId, "requestData": "{\"system\":{\"get_sysinfo\":null},\"emeter\":{\"get_realtime\":null}}" }}
        fetch(url, {
          method: 'POST',
-         body: JSON.stringify(data), // data can be `string` or {object}!
+         body: JSON.stringify(data), // datad can be `string` or {object}!
          headers:{
            'Content-Type': 'application/json'
          }
