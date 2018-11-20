@@ -32,37 +32,25 @@ class DefaultHeader extends Component {
             <NavLink href="/">Dashboard</NavLink>
           </NavItem>
           <NavItem className="px-3">
-            <NavLink href="#/lights">Lights</NavLink>
-          </NavItem>
-          <NavItem className="px-3">
-            <NavLink href="#">Lock</NavLink>
-          </NavItem>
-          <NavItem className="px-3">
-            <NavLink href="#">Cameras</NavLink>
-          </NavItem>
-          <NavItem className="px-3">
-            <NavLink href="#">Thermostat</NavLink>
-          </NavItem>
-          <NavItem className="px-3">
             <NavLink href="#/users">Users</NavLink>
+          </NavItem>
+          <NavItem className="px-3">
+            <NavLink href="#">Settings</NavLink>
           </NavItem>
         </Nav>
         <Nav className="ml-auto" navbar>
           <NavItem className="d-md-down-none">
             <NavLink href="#"><i className="icon-bell"></i><Badge pill color="danger">5</Badge></NavLink>
           </NavItem>
-          {/*<NavItem className="d-md-down-none">
+          <NavItem className="d-md-down-none">
             <NavLink href="#"><i className="icon-list"></i></NavLink>
           </NavItem>
-          */}
-           {/*
           <NavItem className="d-md-down-none">
             <NavLink href="#"><i className="icon-location-pin"></i></NavLink>
           </NavItem>
-          */}
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-              <img src={'assets/img/avatars/me.jpg'} className="img-avatar" alt="joseajimenez@me.com" />
+              <img src={'assets/img/avatars/me.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>

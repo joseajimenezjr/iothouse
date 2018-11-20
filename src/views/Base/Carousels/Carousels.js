@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Carousel, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Col, Row } from 'reactstrap';
+//import Widget01 from './views/Widgets/Widget01';
 import SwipeableViews from 'react-swipeable-views';
+//jose
 
-var items = 123;
+var jose = 123;
 
 const mystyles = {
   slide: {
@@ -22,7 +24,7 @@ const mystyles = {
 };
 
 class Carousels extends Component {
-
+/*
   constructor(props) {
     super(props);
     this.state = { activeIndex: 0 };
@@ -57,7 +59,7 @@ class Carousels extends Component {
     if (this.animating) return;
     this.setState({ activeIndex: newIndex });
   }
-
+*/
   render() {
     const { activeIndex } = this.state;
 
