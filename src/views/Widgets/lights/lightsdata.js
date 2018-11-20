@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import tokenId from './lights/mytokeninfo';
+import mytokenId from './mytokeninfo';
+import Widget01 from '../Widget01';
+import {Col, Row } from 'reactstrap';
 
-const tokenId ={tokenId};
-const lightsData = {
+
+const tokenId ={mytokenId};
+const myLightsData = {
     "deviceList":[
              {"fwVer":"1.5.2 Build 171208 Rel.114610","deviceName":"Smart Wi-Fi Light Switch","status":null,"alias":"Living room can","deviceType":"IOT.SMARTPLUGSWITCH","appServerUrl":"https://use1-wap.tplinkcloud.com","deviceModel":"HS200(US)","deviceMac":"AC84C65E46D7","role":0,"isSameRegion":true,"hwId":"12657950800085A27A64E9E775C8A7A7","fwId":"00000000000000000000000000000000","oemId":"4748FB6E209D782A854A4B5AEDC89284","deviceId":"8006733AFA98F3E63041EE1A0C6EE1351A13ABEA","deviceHwVer":"2.0"},
              {"fwVer":"1.2.5 Build 171206 Rel.090404","deviceName":"Wi-Fi Smart Light Switch","status":null,"alias":"Driveway","deviceType":"IOT.SMARTPLUGSWITCH","appServerUrl":"https://use1-wap.tplinkcloud.com","deviceModel":"HS200(US)","deviceMac":"50C7BFA6A628","role":0,"isSameRegion":true,"hwId":"A0E3CC8F5C1166B27A16D56BE262A6D3","fwId":"00000000000000000000000000000000","oemId":"4AFE44A41F868FD2340E6D1308D8551D","deviceId":"8006C62B2D07128E22AA109DA50DF6D6189F433E","deviceHwVer":"1.0"},
@@ -22,35 +25,91 @@ const lightsData = {
              {"fwVer":"1.5.2 Build 171208 Rel.114610","deviceName":"Smart Wi-Fi Light Switch","status":null,"alias":"Living room","deviceType":"IOT.SMARTPLUGSWITCH","appServerUrl":"https://use1-wap.tplinkcloud.com","deviceModel":"HS200(US)","deviceMac":"AC84C65E410E","role":0,"isSameRegion":true,"hwId":"12657950800085A27A64E9E775C8A7A7","fwId":"00000000000000000000000000000000","oemId":"4748FB6E209D782A854A4B5AEDC89284","deviceId":"8006FF9FF28B776DF4DC74D95B1015451A128981","deviceHwVer":"2.0"}
          ]}
 
-class LightsData extends Component {
+class MyLights extends Component {
 
-render() {
-    var lightpull = true;  
+    constructor(props) {
+        super(props);
+        this.state = {
+            lightsData: []
+        };
+      }
 
-    const actualLights = []
- 
- var lightmapper = lightsData.deviceList.map((lightId, index) => {
-     var url = 'https://wap.tplinkcloud.com?'+tokenId;
-     var data = {"method":"passthrough", "params": {"deviceId": lightId.deviceId, "requestData": "{\"system\":{\"get_sysinfo\":null},\"emeter\":{\"get_realtime\":null}}" }}
-       fetch(url, {
-         method: 'POST',
-         body: JSON.stringify(data), // data can be `string` or {object}!
-         headers:{
-           'Content-Type': 'application/json'
-         }
+      componentDidMount(){
+        var lightmapper = myLightsData.deviceList.map((lightId, index) => {
+          var url = 'https://wap.tplinkcloud.com?'+tokenId.mytokenId;
+          var data = {"method":"passthrough", "params": {"deviceId": lightId.deviceId, "requestData": "{\"system\":{\"get_sysinfo\":null},\"emeter\":{\"get_realtime\":null}}" }}
+            fetch(url, {
+              method: 'POST',
+              body: JSON.stringify(data), // data can be `string` or {object}!
+              headers:{
+                'Content-Type': 'application/json'
+              }
+            })
+            .then(response => response.json())
+            .then(response => {
+              myLightsData.deviceList[index].status = JSON.parse(response.result.responseData).system.get_sysinfo.relay_state;
+              if(myLightsData.deviceList[index].status == 0|null){
+                console.log("nothing to see here");
+            }else if(myLightsData.deviceList[index].status == 1){
+              this.setState({lightsData:myLightsData});
+              }              
+            })
+            .catch(error => console.error('Error:', error))
+          });
+  
+      }
+
+      lightStatusHandler = (first, info) => {
+        var lightindex = info.props.index;
+        var lightStatus = document.getElementsByClassName('switch-input form-check-input')[lightindex].checked === true ? 1:0;
+        console.log(first);
+        console.log("lightstatus"+lightStatus);
+        console.log(lightindex);
+        //this.setState({lights:update({type:{deviceList:{[lightindex]:{status: testing}}}})});
+        myLightsData.deviceList[lightindex].status = lightStatus;
+          var url = 'https://use1-wap.tplinkcloud.com/?'+tokenId.mytokenId;
+          
+          var data = {"method":"passthrough", "set_dev_alias":{"alias":""}, "params": {"deviceId": info.props.lightid, "requestData": "{\"system\":{\"set_relay_state\":{\"state\":" + lightStatus + "}}}" }};
+    
+          fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(data), // data can be `string` or {object}!
+            headers:{
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(response => response.json())
+          .then(response => console.log("complete"))
+          .catch(error => console.error('Error:', error));
+      }
+    
+     
+      /*
+      shouldComponentUpdate(nextProps, nextState){
+        return nextState.lightsData != this.state.lightsData;
+      }
+*/
+    render() {
+    
+                
+      let myFinalLights = myLightsData.deviceList.map((eachLight, index)=> {
+        return (
+          <Col xs="12" sm="6" lg="3" key={index}>
+         <Widget01 color="success" key={eachLight.deviceId}  header={eachLight.alias} lightid={eachLight.deviceId} index={index} checked={eachLight.status} lightstatusupdate={this.lightStatusHandler}/>
+         {console.log(eachLight.status)}
+         {console.log('this is the state ', this.state)}
+         </Col>
+       )
        })
-       .then(response => response.json())
-       .then(response => lightsData.deviceList[index].status = JSON.parse(response.result.responseData).system.get_sysinfo.relay_state)
-       .catch(error => console.error('Error:', error))
-     });
-
-     var updatecomplete = true;
-
-    return (
-        <p loadedevent={this.props.loadedevent(this.lightsData, updatecomplete)} />
+       
+        return (
+          <div className="animated fadeIn">
+          <Row>
+          {myFinalLights}
+          </Row>
+          </div>
         );
+      }
     }
-}
-
-
-export default lightsData
+    
+    export default MyLights;

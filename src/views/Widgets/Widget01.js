@@ -51,7 +51,7 @@ class Widget01 extends Component {
     return (
       <Card className={classes} {...attributes}>
         <CardBody>
-        <AppSwitch className={'float-right mb-0'} label color={'info'} size={'lg'} checked={this.props.lightstatusinfo} onChange={(event)=>this.props.lightstatusupdate(this.state,this)}/>
+        <AppSwitch className={'float-right mb-0'} label color={'info'} size={'lg'} checked={this.props.checked} onChange={(event)=>this.props.lightstatusupdate(this.state,this)}/>
           <div className="h4 m-0">{header}</div>
           <div>{mainText}</div>
           {/*<Progress className={progress.style} color={progress.color} value={progress.value} />*/}
